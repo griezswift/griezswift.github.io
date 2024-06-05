@@ -1,0 +1,929 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="STL 容器：  set：键值要求唯一，自动排序，红黑树实现 multiset：键值可重复，自动排序，红黑树实现 unorderd_set：不排序，哈希表实现 map（key : value）：键值对唯一，按规则插入，红黑树实现，节点是键值对 multimap（key : value）：键值对可重复，按规则插入，红黑树实现，节点是键值对 unorderd_set：不排序，哈希表实现 stack,q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2024/06/05/%E5%85%AB%E8%82%A1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="STL 容器：  set：键值要求唯一，自动排序，红黑树实现 multiset：键值可重复，自动排序，红黑树实现 unorderd_set：不排序，哈希表实现 map（key : value）：键值对唯一，按规则插入，红黑树实现，节点是键值对 multimap（key : value）：键值对可重复，按规则插入，红黑树实现，节点是键值对 unorderd_set：不排序，哈希表实现 stack,q">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-05T15:09:20.920Z">
+<meta property="article:modified_time" content="2024-05-08T19:00:14.370Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-05 23:09" pubdate>
+          2024年6月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h1><ul>
+<li><p>容器：</p>
+<ul>
+<li>set：键值要求唯一，自动排序，红黑树实现</li>
+<li>multiset：键值可重复，自动排序，红黑树实现</li>
+<li>unorderd_set：不排序，哈希表实现</li>
+<li>map（key : value）：键值对唯一，按规则插入，红黑树实现，节点是键值对</li>
+<li>multimap（key : value）：键值对可重复，按规则插入，红黑树实现，节点是键值对</li>
+<li>unorderd_set：不排序，哈希表实现</li>
+<li>stack,queue：deque实现，是双端队列</li>
+<li>priority_queue：vector，堆实现</li>
+<li>list：双向链表实现</li>
+<li>hash_table：数组+链表实现，线程安全，因为加锁了，效率低，concurrenthash_map做了优化</li>
+<li>hash_map：无自动排序，hash_map实现</li>
+</ul>
+</li>
+<li><p>JAVA集合</p>
+<ul>
+<li><p><code>ArrayList</code>：<code>Object[]</code> 数组。详细可以查看：</p>
+<p><code>Vector</code>：<code>Object[]</code> 数组。</p>
+<p><code>LinkedList</code>：双向链表(JDK1.6 之前为循环链表，JDK1.7 取消了循环)</p>
+<p><code>HashSet</code>(无序，唯一): 基于 <code>HashMap</code> 实现的，底层采用 <code>HashMap</code> 来保存元素。</p>
+</li>
+<li><p><code>LinkedHashSet</code>: <code>LinkedHashSet</code> 是 <code>HashSet</code> 的子类，并且其内部是通过 <code>LinkedHashMap</code> 来实现的。</p>
+<p><code>TreeSet</code>(有序，唯一): 红黑树(自平衡的排序二叉树)</p>
+</li>
+</ul>
+<ul>
+<li><p><code>PriorityQueue</code>: <code>Object[]</code> 数组来实现小顶堆。</p>
+<p><code>DelayQueue</code>:<code>PriorityQueue</code>。</p>
+<p><code>ArrayDeque</code>: 可扩容动态双向数组</p>
+</li>
+<li><p>实现自定义排序需要重写compareto方法</p>
+</li>
+<li><p>hashset如果检查重复：先比较hashcode,,如果相同使用string equal函数对比</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h1><ul>
+<li>JRE &#x3D; JVM + 已编译文件、库。是java运行时的环境，包含了编译好的java文件集合和java基础类库library</li>
+<li>JDK &#x3D; JRE + java开发工具，如javac、jdb调试器等</li>
+<li>JVM JAVA虚拟机</li>
+</ul>
+<h2 id="接口和抽象类的区别"><a href="#接口和抽象类的区别" class="headerlink" title="接口和抽象类的区别"></a>接口和抽象类的区别</h2><ul>
+<li>接口定义的是实现类需要必须实现的方法和行为，只能声明方法，不能在方法体中编写具体代码，默认都是抽象方法</li>
+<li>抽象类中定义的是继承类中有相同特征的方法和行为 ，可以声明抽象方法和普通方法，方法中可以编写具体的方法体代码，但是接口的方法中不可以编写方法体代码</li>
+</ul>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><ul>
+<li>应用场景：动态代理、注解（运行期通过反射处理注解的解析）</li>
+<li>通过反射可以获取任意一个类的所有属性和方法，然后可以调用他们</li>
+<li>java获取类对象四种方法：<ul>
+<li>通过<code>class.forname()</code>传入类全路径</li>
+<li>通过对象实例<code>instance.getClass()</code>获取</li>
+<li>通过类加载器<code>xxxClassLoader.loadClass()</code>传入类路径获取</li>
+</ul>
+</li>
+</ul>
+<h2 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h2><ul>
+<li>目的是持久化java对象，即是实例化后的类class</li>
+<li>序列化：数据结构和对象转化成二进制字节流</li>
+<li>反序列化：二进制字节流转换程数据结构或者对象</li>
+<li>应用场景：网络传输、存储到文件、数据库和redis、内存</li>
+<li>不想序列化的变量可以用<code>rtransient</code>修饰，该关键字不能修饰类和方法</li>
+<li>static变量不属于任何对象所以不会被序列化</li>
+<li>Kryo序列化协议专门针对java，性能非常好，因为具有变长存储特性和字节码生成机制</li>
+<li>JDK自带的序列化不支持跨语言调用、存在安全问题（可以恶意构造输入）</li>
+</ul>
+<h2 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h2><ul>
+<li>不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I&#x2F;O 流操作要分为字节流操作和字符流操作呢？字符流由jvm将字节转换得到，比较耗时。如果不知道编码类型用字节流会出现乱码问题</li>
+</ul>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
+<li>装饰器模式，通过组合替代继承扩展原始类的功能</li>
+<li>适配器模式，用于接口不兼容的类的协调工作。<code>InputStreamReader</code> 和 <code>OutputStreamWriter</code> 就是两个适配器(Adapter)， 同时，它们两个也是字节流和字符流之间的桥梁，通过流解码器和流编码对字节进行解码和对字符编码</li>
+<li>工厂模式，</li>
+<li>观察者模式，观察者设计模式使订阅者能够从提供程序注册并接收通知。 它适用于需要基于推送的通知的方案。 此模式定义提供程序（亦称为“使用者”或“可观察对象”），以及零个、一个或多个观察者。 观察者注册提供程序，并且每当预定义的条件、事件或状态发生更改时，该提供程序会通过调用委托来自动通知所有观察者。<strong>简单说就是定义了一种一对多的依赖关系，当一个对象的状态发生改变时，其所有依赖者都会收到通知并自动更新。NIO文件目录监听使用了这种方案</strong></li>
+</ul>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h3 id="内存区域"><a href="#内存区域" class="headerlink" title="内存区域"></a>内存区域</h3><ul>
+<li><p>运行时数据区：堆（线程共享）+ 线程地址空间（线程私有）+本地内存</p>
+</li>
+<li><p>（线程共享）堆存放字符串常量池</p>
+</li>
+<li><p>（线程私有）线程地址空间包括虚拟机栈、程序计数器PC、本地方法区</p>
+</li>
+<li><p>（线程共享）本地内存跟运行时数据区分离，里面有元空间存放字符串常量池</p>
+</li>
+</ul>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><ul>
+<li><p>死亡对象判断方法</p>
+<ul>
+<li>引用计数法</li>
+<li>可达性分析法</li>
+</ul>
+</li>
+<li><p>如何判断废弃常量？比如：没有任何 String 对象引用该字符串常量的话，就说明常量 “abc” 就是废弃常量</p>
+</li>
+<li><p>如何判断一个无用的类？</p>
+<ul>
+<li>所有实例已经回收</li>
+<li>加载该类的类加载器已经被回收</li>
+<li>类对象没有在其他地方被引用，无法通过反射获取该类的方法</li>
+</ul>
+</li>
+<li><p>垃圾收集有哪些算法？<strong>标记清除算法、复制算法、标记整理算法、分代收集算法</strong></p>
+</li>
+<li><p>垃圾收集器有哪些？</p>
+<ul>
+<li><strong>Serial 串行收集器：</strong>新生代采用标记-复制算法，老年代采用标记-整理算法</li>
+<li><strong>ParNew 收集器（串行收集器的多线程版本）****新生代采用标记-复制算法，老年代采用标记-整理算法</strong></li>
+<li>**Parallel Scavenge **平行收集器是使用标记-复制算法的多线程收集器 JDK1.8的默认收集器</li>
+</ul>
+</li>
+</ul>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><ul>
+<li>ACID: 原子性 一致性 隔离性 持久性</li>
+</ul>
+<h2 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h2><ul>
+<li>读取未提交：允许读取未提交的数据变更，可能会脏读 幻读 不可重复读</li>
+<li>读取已提交：允许读取已经提交的数据变更，可能会幻读 不可重复读</li>
+<li>可重复读：对同一字段多次读数据一致，除非事务自己更改数据，可能会幻读</li>
+<li>串行化：所有事务顺序执行，无任何风险</li>
+<li>脏读：事务a修改了数据，修改之后事务b读取了这个数据，读取之后事务a回滚了。</li>
+<li>不可重复读：mysql默认级别。事务a多次读同一个数据，在此期间事务b修改了数据，导致事务a多次读取的数据不一致,侧重update和delete</li>
+<li>幻读：幻读并不是说两次读取获取的结果集不同，幻读侧重的方面是某一次的 select 操作得到的结果所表征的数据状态无法支撑后续的业务操作。更为具体一些：事务a select 某记录是否存在，结果为不存在，准备插入此记录，但执行 insert 时发现此记录已存在，无法插入，此时就发生了幻读。侧重于insert</li>
+<li>脏写：事务a修改数据为a,事务b修改数据为b，事务a回滚，b的数据没有了</li>
+</ul>
+<h2 id="慢sql优化"><a href="#慢sql优化" class="headerlink" title="慢sql优化"></a>慢sql优化</h2><ul>
+<li>不使用子查询、分组统计禁止不必要排序、</li>
+<li>尽量不超过3个表的join，不使用 select *</li>
+<li>避免索引失效（避免全表扫描）<ul>
+<li>不在where后子句字段加函数运算</li>
+<li>不进行字段类型转换</li>
+<li>搜索只能右模糊</li>
+<li>避免对字段进行null 值判断</li>
+<li>不在where子句使用动态参数传入</li>
+</ul>
+</li>
+</ul>
+<h2 id="三大日志"><a href="#三大日志" class="headerlink" title="三大日志"></a>三大日志</h2><ul>
+<li>错误日志、查询日志、慢查询日志、事物日志等</li>
+<li>三大指：<strong>归档日志 重做（事务）日志 回滚日志</strong></li>
+<li><strong>redo log 重做日志</strong>（属于物理日志）：mysql挂了或宕机，重启时引擎会使用重做日志恢复数据，体现崩溃恢复能力<ul>
+<li>在某个数据页上做了什么修改记录到redo log 缓存中，然后刷盘到redo log 文件中</li>
+<li>每条 redo 记录由“表空间号+数据页号+偏移量+修改数据长度+具体修改的数据”组成</li>
+</ul>
+</li>
+<li><strong>binlog 归档日志（属于逻辑日志）</strong>：记录所有涉及更新数据的逻辑操作，并且是顺序写，体现数据备份、主从功能、集群同步数据、保证数据一致性<ul>
+<li>记录的内容是sql语句原文</li>
+<li>同步的时候执行记录的语句原文，像日期这种实时性数据需要在语句中具体指定，否则会导致同步的数据不一致。</li>
+<li>写入时机：事务执行时日志先写的binlog 缓存，事务提交时把缓存写入到binlog 文件。</li>
+</ul>
+</li>
+<li><strong>undo log 回滚日志</strong>：所有事务进行的修改都会先记录到回滚日志中，然后再执行操作。如果执行过程中遇到异常的话，直接利用 <strong>回滚日志</strong> 中的信息将数据回滚到修改之前的样子即可！并且，回滚日志会先于数据持久化到磁盘上。</li>
+</ul>
+<h2 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC 多版本并发控制"></a>MVCC 多版本并发控制</h2><ul>
+<li><p>通过<strong>READ VIEW、回滚日志、隐藏字段</strong>实现</p>
+</li>
+<li><p>隐藏字段：</p>
+<ul>
+<li><code>DB_TRX_ID（6字节）</code>记录最后一次插入或更新该行的id</li>
+<li><code>DB_ROLL_PTR（7字节）</code>回滚指针，指向这行的回滚日志</li>
+<li><code>DB_ROW_ID（6字节）</code>在一定条件下用于生成聚簇索引的id</li>
+</ul>
+</li>
+<li><p>READ VIEW：</p>
+<ul>
+<li>主要是保存了大于等于、小于该事务id的事务id集合、其他未提交的活跃事务列表</li>
+<li>目的是用来做事务可见性判断、保存了<strong>当前对本事务不可见的其他活跃事务</strong></li>
+</ul>
+</li>
+<li><p>回滚日志 redo log</p>
+<ul>
+<li>事务回滚时候用于数据恢复</li>
+<li>mvcc中可以通过 redo log <strong>读取之前的版本数据实现非锁定读</strong></li>
+</ul>
+</li>
+<li><p>在<strong>读取已提交</strong>的隔离级别时，事务在每次查询开始时都会生成并设置新的 <code>Read View</code>，所以导致不可重复读</p>
+</li>
+<li><p>在<strong>可重复读</strong>隔离级别下只在事务开始后 <strong><code>第一次select</code></strong> 数据前生成一个<code>Read View</code></p>
+</li>
+<li><p><strong>MVCC + Next-key-Lock</strong> 防止幻读</p>
+</li>
+</ul>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="进程线程"><a href="#进程线程" class="headerlink" title="进程线程"></a>进程线程</h2><ul>
+<li><p>进程：计算机中运行的程序实例，是计算机分配资源的单位</p>
+</li>
+<li><p>线程：多个线程可以在同一个进程中运行，是CPU独立调度和分派的最小单位</p>
+</li>
+<li><p>区别：一个进程中可以有多个线程，多个线程共享进程的堆栈地址空间和方法区，每个线程会有自己的PC和虚拟机栈、本地方法栈。<strong>进程切换开销大，线程切换开销低</strong></p>
+</li>
+<li><p>多线程好处：减少上下文切换开销、多线程并发编程是高并发系统基础</p>
+</li>
+<li><p>线程间同步方法：互斥锁 读写锁 信号量 屏障 事件</p>
+</li>
+<li><p>进程间通信方法：<strong>管道</strong> 消息队列  信号量 共享内存 socket</p>
+<p>​</p>
+</li>
+</ul>
+<p>	</p>
+<h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><ul>
+<li><p>HTTP1.0 ： 短链接，存在带宽浪费，明文传输</p>
+</li>
+<li><p>HTTP1.1：长连接，支持断电续传，加入大量状态响应码，允许一个ip地址托管多个域名、明文传输，连接复用，但是只能按顺序返回请求，会出现队头阻塞。</p>
+</li>
+<li><p>HTTP2.0：运行在SSL&#x2F;TLS上的HTTP协议,多路复用（同一连接上可以同时传输多个请求和响应，可以避免队头阻塞）、头部压缩、加密传输</p>
+</li>
+<li><p>URI 统一资源标识符：唯一标识一个资源</p>
+</li>
+<li><p>URL 统一资源定位符，是路径</p>
+</li>
+<li><p>GET 获取和查询资源、请求具有幂等性，可以进行缓存加快访问速度</p>
+</li>
+<li><p>POST 修改和创建资源，请求一般放在body中，另外比GET安全一点</p>
+</li>
+</ul>
+<h1 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h1><ul>
+<li>cat vim vi 查看 创建 编辑文件 </li>
+<li>chmod 修改文件权限</li>
+<li>reboot 重启系统</li>
+<li>cd  ls  mv 切换目录 查看当前目录 移动目录</li>
+<li>df 查看磁盘使用情况</li>
+<li>mkdir  rmdir 创建文件目录 删除目录</li>
+<li>rm -rf 删除任何文件</li>
+<li>wget  yum install 下载</li>
+<li>kill 杀掉进程</li>
+<li>tar 解压</li>
+</ul>
+<h1 id="git命令"><a href="#git命令" class="headerlink" title="git命令"></a>git命令</h1><ul>
+<li>git commit 提交</li>
+<li>git clone 克隆到本地</li>
+<li>git push 推</li>
+<li>git pull 拉取</li>
+<li>git rm 删除</li>
+<li>git branch 分支</li>
+<li>git add 增加内容</li>
+</ul>
+<h1 id="docker命令"><a href="#docker命令" class="headerlink" title="docker命令"></a>docker命令</h1><p><strong>Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）</strong></p>
+<p>镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，<strong>容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等</strong></p>
+<p><strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间</strong></p>
+<ul>
+<li>docker version 查看版本</li>
+<li>docker images 查看所有镜像</li>
+<li>docker container ls 查看所有容器</li>
+<li>docker ps 查看正在运行的容器</li>
+<li>docker search … 搜索相关镜像</li>
+<li>docker pull … 拉取镜像</li>
+<li>docker stop 停止容器</li>
+<li>docker rmi 删除镜像</li>
+</ul>
+<h1 id="Springboot"><a href="#Springboot" class="headerlink" title="Springboot"></a>Springboot</h1><h2 id="springboot启动流程和自动配置原理"><a href="#springboot启动流程和自动配置原理" class="headerlink" title="springboot启动流程和自动配置原理"></a>springboot启动流程和自动配置原理</h2><p><strong>@SpringbootApplication包含三个关键注解</strong></p>
+<p>​	@springbootConfiguration:表示启动类是一个自动配置类</p>
+<p>​	@CompontScan:扫描启动类所在包外的组件到容器中</p>
+<p>​	@EnableConfigutarion：启动类所在包下的所有组件全部加载到ioc容器中，</p>
+<ul>
+<li><strong>启动流程</strong><ul>
+<li>加载启动类，也就是@SpringbootApplication标注的类，然后自动配置相应的bean</li>
+<li>加载配置文件，从application.yaml配置文件中加载</li>
+<li>创建spring容器，使用springbootApplication类创建容器，springapplication类提供了管理bean的方法，如果是springboot web项目会创建一个内置的web服务器</li>
+<li>自动加载配置，springboot通过@EnableAutoConfiguration注解完成配置，根据starter依赖中的configuration自动装配相应的bean</li>
+<li>运行springboot应用程序，如果是web项目就会启动内置web服务器</li>
+</ul>
+</li>
+</ul>
+<h2 id="springboot依赖注入"><a href="#springboot依赖注入" class="headerlink" title="springboot依赖注入"></a>springboot依赖注入</h2><p>bean是指被IOC容器管理的对象，对对象声明为bean意味着愿意把对象实例创建给IOC容器进行管理，以下这些注解用于声明bean</p>
+<ul>
+<li>@bean 对方法生命注解，自定义性更强，第三方库注入用这个</li>
+<li>@component 通用注解，对所有组件都适用一般对对象进行注解</li>
+<li>@service 对服务层注解</li>
+<li>@controller对控制层进行注解</li>
+<li>@repository对持久层（dao层）进行注解</li>
+</ul>
+<p>@autowired根据属性、类型进行匹配去注入bean</p>
+<p>@resource根据名称进行匹配去注入bean</p>
+<p>如果一个接口有多个实现类，bytype会失效，推荐用byname进行注入，@autowired可以通过@qualifier来显式指定类名称，@resource可以通过name属性来指定</p>
+<h2 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h2><ul>
+<li>通过反射创建bean实例，</li>
+<li>bean属性赋值填充，用构造函数或包装函数注入依赖和值</li>
+<li>bean初始化，</li>
+<li>销毁bean，先记录销毁的方法，然后真正需要销毁bean或者容器的时候，调用这些方法去释放bean</li>
+</ul>
+<h2 id="spring事务失效的情况"><a href="#spring事务失效的情况" class="headerlink" title="spring事务失效的情况"></a>spring事务失效的情况</h2><ul>
+<li>数据库引擎不支持事务</li>
+<li>添加事务的类没有被IOC容器管理</li>
+<li>注解作用的方法不是public</li>
+<li>设置了错误的传播特性，注解的rollback属性、propagation属性设置错误</li>
+<li>在本方法中继续调用了本方法<ul>
+<li>解决方法：自己调用自己、自己注入自己</li>
+<li>通过AOP代理调用</li>
+<li>使用@async注解异步执行，避免在当前线程执行引发出现事务失效</li>
+</ul>
+</li>
+<li>异常被捕获后没有被抛出，<strong>事务是通过识别运行时异常进行回滚的</strong></li>
+<li>自定义了回滚异常</li>
+<li>一般使用REQUIRED、NESTED 、REQUIRED_NEW进行事务传播行为的定义</li>
+</ul>
+<h2 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h2><ul>
+<li>两个或者多个bean之间相互依赖，导致无法正确创建</li>
+</ul>
+<h3 id="如何发现循环依赖"><a href="#如何发现循环依赖" class="headerlink" title="如何发现循环依赖"></a>如何发现循环依赖</h3><ul>
+<li><p>调试工具检测栈和变量信息，观察是否有多个bean对象互相等待初始化的情况</p>
+</li>
+<li><p>用专门的循环依赖检测工具（ASM JAVASSIST）来检测</p>
+</li>
+<li><p>添加日志记录，跟踪Bean的创建和注入过程。如果发现日志中存在循环依赖的线索，例如多个Bean相互依赖导致的创建顺序循环</p>
+</li>
+</ul>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><ul>
+<li>两者都<strong>使用构造器注入时spring不支持循环依赖</strong>，通过参数传递依赖项的方式解决，因为可以保证依赖项在实例化bean的时候已经准备好</li>
+<li>两者都<strong>使用setter注入时spring支持循环依赖</strong></li>
+<li><strong>使用属性自动注入时spring支持循环依赖</strong></li>
+<li>使用@lazy注解，让spring在需要的时候延迟加载bean</li>
+<li>使用中介者、观察者模式来降低依赖关系</li>
+</ul>
+<h3 id="spring三级缓存：内存、本地、网络"><a href="#spring三级缓存：内存、本地、网络" class="headerlink" title="spring三级缓存：内存、本地、网络"></a>spring三级缓存：内存、本地、网络</h3><ul>
+<li><strong>通过spring三级缓存解决，是三个map集合，第三层是单例对象工厂缓存（存放对象工厂，用于表示已经存在这个对象），第二层是提前曝光的单例对象缓存（只完成了实例化），第一层是单例对象缓存（实例化、赋值、初始化都完成的）</strong><ul>
+<li>实例化A的时候把A对象工厂放入三级缓存，表示实例化了，虽然不完整，但是提前暴露</li>
+<li>A注入属性时候需要依赖B,然后实例化B</li>
+<li>B注入属性时候需要依赖A，然后从一级到三级缓存找A,在三级缓存找到后把a放入二级缓存，同时删除三级缓存中的a，此时b实例化、赋值、初始化完成，放到一级缓存</li>
+<li>接着a属性赋值，从一级缓存获得b，a对象创建完成，删除二级缓存中的a,把a放入一级缓存。此时两者都完成了实例化、属性赋值和初始化。</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2024/06/05/八股/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/18/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
