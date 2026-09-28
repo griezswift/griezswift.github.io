@@ -2,3 +2,37 @@
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
 User-agent: *
+
+
+<h3>Trade's interests</h3>
+<UL>
+<li>Destiny tests us time and again, only to forge an unshakeable heart.</li> 
+<li>Gains of over 50% on [US TQQQ] on Nasdaq</li>
+<li>Gains of over 500% on [US MUU] on Nasdaq(Light position)</li>
+<li>Gains of 90% on [SH 688820] on the Shanghai Stock Exchange</li>
+<li>Gains of 30% on [SZ 301358] on the Shenzhen Stock Exchange , the maximum drawdown during the holding period is close to 40%</li>
+<li>Gains of 25% on [BJ 920186] on the Beijing Stock Exchange in 1 day</li>
+<li>Gains of 150% on [SZ 001270] on the Shenzhen Stock Exchange(Light position)</li>
+</UL>	
+
+<body>
+    
+    <div data-magellan-destination="" class="row">
+      <div class="large-12 columns">
+
+  <div style="display:block;margin:1; padding-top: 10px;">
+    <span style="display: inline-block; min-width: 190px; margin-right:10px;"><img src="img/photo1.jpg" alt="photo" align="left" width="190"></span><span style="display: inline-block; padding-left:10px; margin:1;text-align:left; vertical-align:top;">
+<h3>she379</h3>
+		<div></div>
+		
+<h4>Information</h4>
+		
+<div><br>
+Msc of AI in Hong Kong University of Science and Technology, Guangzhou (HKUST-GZ)<br>
+Bsc of CS in South China Argiculture University,Guangzhou <br>		
+Email: myname@connect.hkust-gz.edu.cn, where myname=she379<br>
+
+ </div>
+</span>
+
+</div>
